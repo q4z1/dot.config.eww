@@ -1,0 +1,33 @@
+#!/bin/sh
+
+## Open folders in nnn
+FILE="$HOME/.cache/eww_launch.dashboard"
+CFG="$HOME/.config/eww/dashboard"
+EWW=`which eww`
+
+close_dash() {
+	${EWW} --config "$CFG" close \
+					background profile system clock uptime music github \
+					reddit twitter youtube tagesschau scinexx geforcenow netflix weather apps mail logout sleep reboot poweroff folders
+	rm -rf "$FILE"
+}
+
+if [[ "$1" == "--dl" ]]; then
+	close_dash && nnn ~/Downloads &
+
+elif [[ "$1" == "--docs" ]]; then
+	close_dash && nnn ~/Documents &
+
+elif [[ "$1" == "--music" ]]; then
+	close_dash && nnn ~/Music &
+
+elif [[ "$1" == "--pics" ]]; then
+	close_dash && nnn ~/Pictures &
+
+elif [[ "$1" == "--cfg" ]]; then
+	close_dash && nnn ~/.config &
+
+elif [[ "$1" == "--local" ]]; then
+	close_dash && nnn ~/.local/share &
+
+fi

@@ -1,0 +1,314 @@
+;; **
+;; ** Widgets config for EWW
+;; ** Created by : @adi1090x
+;; ** Converted by : @tripleo1
+;; **
+
+;; ** Variables ***********************************************************************
+
+;; Profile vars
+(defvar IMAGE "images/profile.jpg")
+(defvar NAME "Kai Philipp")
+(defpoll UNAME :interval "5m" `whoami`)
+
+;; System vars
+(defpoll HOST :interval "5s" `hostname`)
+(defpoll CPU_USAGE :interval "5s" `scripts/sys_info --cpu`)
+(defpoll MEM_USAGE :interval "5s" `scripts/sys_info --mem`)
+(defpoll TEMPERATURE :interval "5s" `scripts/sys_info --temp`)
+
+;; Time vars
+(defpoll HOUR :interval "5s" `date +\"%H\"`)
+(defpoll MIN :interval "5s" `date +\"%M\"`)
+(defpoll MER :interval "5s" `date +\"%p\"`)
+(defpoll DAY :interval "5s" `date +\"%A\"`)
+
+;; Uptime vars
+(defpoll UPHOUR :interval "5s" `uptime | awk '{print $2}' | sed 's/\\([0-9]\\+\\):\\([0-9]\\+\\)/\\1 hours/'`)
+(defpoll UPMIN :interval "5s" `uptime | awk '{print $2}' | sed 's/\\([0-9]\\+\\):\\([0-9]\\+\\)/\\2 minutes/'`)
+
+;; Weather vars
+(defpoll ICON :interval "15m" `scripts/weather_info --icon`)
+(defpoll STAT :interval "15m" `scripts/weather_info --stat`)
+(defpoll TEMP :interval "15m" `scripts/weather_info --temp`)
+(defpoll HEX :interval "15m" `scripts/weather_info --hex`)
+(defpoll QUOTE :interval "15m" `scripts/weather_info --quote`)
+(defpoll QUOTE2 :interval "15m" `scripts/weather_info --quote2`)
+
+;; Apps vars
+(defpoll MAILS_GMAIL :interval "5m" `scripts/mails_gmail`)
+(defpoll MAILS_INQUIES :interval "5m" `scripts/mails_inquies`)
+(defpoll MAILS_POKERTH :interval "5m" `scripts/mails_pokerth`)
+
+;; Files vars
+(defpoll FREE :interval "5s" `df -h / | awk '{print $4}' | tail -n 1 | sed 's/G/GB/'`)
+
+
+;; ** Widgets *************************************************************************
+
+
+;; background
+(defwidget bg [] 
+	(box :class "bg")
+)
+
+;; profile
+(defwidget user [] 
+	(box :class "genwin" :orientation "v" :spacing 35 :space-evenly "false" :vexpand "false" :hexpand "false"
+		(box :style "background-image: url('${IMAGE}');" :class "face" :halign "center")
+		(label :class "fullname" :halign "center" :wrap "true" :limit-width 25 :text NAME)
+		(label :class "username" :halign "center" :wrap "true" :limit-width 25 :text UNAME)))
+
+;; system
+(defwidget system [] 
+	(box :class "genwin" :vexpand "false" :hexpand "false" 
+		(box :orientation "v" :spacing 15 :halign "center" :valign "center" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(box :class "cpu_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(label :class "iconcpu" :text "")
+				(scale :min 0 :max 100 :value CPU_USAGE :active "false"))
+			(box :class "mem_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(label :class "iconmem" :text "")
+				(scale :min 0 :max 100 :value MEM_USAGE :active "false"))
+			(box :class "temp_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(label :class "icontemp" :text "")
+				(label :class "icontemp" :text TEMPERATURE))
+		)
+	)
+)
+
+;; clock
+(defwidget clock [] 
+	(box :class "genwin" :orientation "h" :spacing 50 :space-evenly false :vexpand "false" :hexpand "false" 
+		(box :orientation "h" :spacing 0
+			(label :class "time_hour" :valign "start" :wrap "true" :limit-width 25 :text HOUR)
+			(label :class "time_min" :valign "end" :wrap "true" :limit-width 25 :text MIN))
+		(box :orientation "v" :spacing 0 
+			(label :class "time_mer" :valign "start" :halign "end" :wrap "true" :limit-width 25 :text MER)
+			(label :class "time_day" :valign "end" :halign "end" :wrap "true" :limit-width 25 :text DAY))))
+
+;; uptime
+(defwidget uptime [] 
+	(box :class "genwin" 
+		(box :orientation "h" :halign "center" :spacing 40 :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(label :class "icontimer" :valign "center" :text "祥")
+			(box :orientation "v" :valign "center" :spacing 0 :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(label :class "uphour" :halign "start" :wrap "true" :limit-width 25 :text UPHOUR)
+				(label :class "upmin" :halign "start" :wrap "true" :limit-width 25 :text UPMIN)))))
+
+;; github
+(defwidget github [] 
+	(box :class "github" :vexpand "false" :hexpand "false" 
+		(button :class "iconweb" :onclick "scripts/open_links --gh" "")))
+
+;; youtube
+(defwidget youtube [] 
+	(box :class "youtube" :vexpand "false" :hexpand "false" 
+		(button :class "iconweb" :onclick "scripts/open_links --yt" "")))
+
+;; netflix
+(defwidget netflix [] 
+	(box :class "netflix" :vexpand "false" :hexpand "false" 
+		(button :style "background: url('images/icons/netflix.svg') no-repeat center; background-size: 75%;" :class "iconweb" :onclick "scripts/open_links --nf")))
+
+;; tagesschau
+(defwidget tagesschau [] 
+	(box :class "tagesschau" :vexpand "false" :hexpand "false" 
+		(button :style "background: url('images/icons/tagesschau.svg') no-repeat center; background-size: 75%;" :class "iconweb" :onclick "scripts/open_links --ts")))
+
+;; scinexx
+(defwidget scinexx [] 
+	(box :class "scinexx" :vexpand "false" :hexpand "false" 
+		(button :style "background: url('images/icons/scinexx.png') no-repeat center; background-size: 75%;" :class "iconweb" :onclick "scripts/open_links --sn")))
+
+;; geforcenow
+(defwidget geforcenow [] 
+	(box :class "geforcenow" :vexpand "false" :hexpand "false" 
+		(button :style "background: url('images/icons/geforcenow.jpg') no-repeat center; background-size: 93%;" :class "iconweb" :onclick "scripts/open_apps --gn")))
+
+;; mail
+(defwidget mail [] 
+	(box :class "mail" :orientation "v" :vexpand "false" :space-evenly "false"
+		(box :class "mailcontainer" :orientation "h" :halign "center" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconmail" :onclick "scripts/open_links --gmail" "")
+			(box :class "mailbox" :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(button :class "label_mails" :onclick "scripts/open_links --gmail" MAILS_GMAIL)))
+		(box :class "mailcontainer" :orientation "h" :halign "center" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconmail" :style "background: url('images/icons/inquies.svg') no-repeat center; background-size: contain;" :onclick "scripts/open_links --imail")
+			(box :class "mailbox" :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(button :class "label_mails" :onclick "scripts/open_links --imail" MAILS_INQUIES)))
+		(box :class "mailcontainer" :orientation "h" :halign "center" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconmail" :style "background: url('images/icons/pokerth.svg') no-repeat center; background-size: contain;" :onclick "scripts/open_links --pmail")
+			(box :class "mailbox" :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(button :class "label_mails" :onclick "scripts/open_links --pmail" MAILS_POKERTH)))
+	))
+
+;; weather
+(defwidget weather [] 
+	(box :class "genwin" 
+		(box :orientation "v" :spacing 10 :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(box :orientation "h" :vexpand "false" :hexpand "false" 
+				(label :class "iconweather" :halign "start" :style "color: ${HEX};" :text ICON)
+				(label :class "label_temp" :halign "end" :text TEMP))
+			(box :orientation "v" :spacing 10 :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(label :class "label_stat" :text STAT)
+				(label :class "label_quote" :text QUOTE)
+				(label :class "label_quote" :text QUOTE2)))))
+
+;; apps
+(defwidget apps [] 
+	(box :class "genwin" :orientation "v" :space-evenly "false" :vexpand "false" :hexpand "false" 
+		(box :class "appbox" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :style "background-image: url('images/icons/firefox.svg');" :class "app_fox" :onclick "scripts/open_apps --ff")
+			(button :style "background-image: url('images/icons/files.svg');" :class "app_files" :onclick "scripts/open_apps --fm")
+			(button :style "background-image: url('images/icons/terminal.svg');" :class "app_terminal" :onclick "scripts/open_apps --tr")
+			)
+		(box :class "appbox" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :style "background-image: url('images/icons/code.svg');" :class "app_code" :onclick "scripts/open_apps --cd")
+			(button :style "background-image: url('images/icons/discord.svg');" :class "app_discord" :onclick "scripts/open_apps --dc")
+			(button :style "background-image: url('images/icons/whatsapp.svg');" :class "app_gimp" :onclick "scripts/open_apps --wa"))
+		(box :class "appbox" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :style "background-image: url('images/icons/gimp.svg');" :class "app_gimp" :onclick "scripts/open_apps --gp")
+			(button :style "background-image: url('images/icons/inkscape.svg');" :class "app_inkscape" :onclick "scripts/open_apps --is"))			
+			
+			))
+
+;; power buttons
+(defwidget logout [] 
+	(box :class "genwin" :vexpand "false" :hexpand "false" 
+		(button :class "btn_logout" :onclick "toggle_dashboard; hyprctl dispatch exit" "")))
+(defwidget sleep [] 
+	(box :class "genwin" :vexpand "false" :hexpand "false" 
+		(button :class "btn_sleep" :onclick "toggle_dashboard; systemctl suspend" "")))
+(defwidget reboot [] 
+	(box :class "genwin" :vexpand "false" :hexpand "false" 
+		(button :class "btn_reboot" :onclick "toggle_dashboard; systemctl reboot" "")))
+(defwidget poweroff [] 
+	(box :class "genwin" :vexpand "false" :hexpand "false" 
+		(button :class "btn_poweroff" :onclick "toggle_dashboard; systemctl poweroff" "")))
+
+;; folders
+(defwidget folders [] 
+	(box :class "genwin" :orientation "v" :space-evenly "false" :vexpand "false" :hexpand "false" 
+		(box :class "hddbox" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(box :space-evenly "false" :vexpand "false" :hexpand "false"
+				(button :class "hddicon" :onclick "scripts/open_apps --fm" "")
+				(label :class "fs_sep" :text "|"))
+			(box :space-evenly "false" :vexpand "false" :hexpand "false" 
+				(label :class "hdd_label" :wrap "true" :limit-width 25 :text FREE)))
+		(box :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconfolder1" :onclick "scripts/open_folders --docs" "")
+			(button :class "label_folder1" :onclick "scripts/open_folders --docs" "Documents"))
+		(box :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconfolder2" :onclick "scripts/open_folders --dl" "")
+			(button :class "label_folder2" :onclick "scripts/open_folders --dl" "Downloads"))
+		(box :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconfolder3" :onclick "scripts/open_folders --music" "")
+			(button :class "label_folder3" :onclick "scripts/open_folders --music" "Music"))
+		(box :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconfolder4" :onclick "scripts/open_folders --pics" "")
+			(button :class "label_folder4" :onclick "scripts/open_folders --pics" "Pictures"))
+		(box :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconfolder5" :onclick "scripts/open_folders --cfg" "ﮛ")
+			(button :class "label_folder5" :onclick "scripts/open_folders --cfg" "~/.config"))
+		(box :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(button :class "iconfolder6" :onclick "scripts/open_folders --local" "ﮛ")
+			(button :class "label_folder6" :onclick "scripts/open_folders --local" "~/.local"))))
+
+
+;; ** Windows *************************************************************************
+
+
+;; background
+(defwindow background :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 0 :y 0 :width "1920px" :height "1080px")
+					(bg))
+
+;; profile
+(defwindow profile :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 150 :y 150 :width 350 :height 440)
+					(user))
+
+;; system
+(defwindow system :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 150 :y 605 :width 350 :height 155)
+					(system))
+
+;; clock
+(defwindow clock :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 515 :y 150 :width 350 :height 155)
+					(clock))
+
+;; uptime
+(defwindow uptime :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 515 :y 320 :width 350 :height 155)
+					(uptime))
+
+;; github
+(defwindow github :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 150 :y 785 :width 141 :height 145)
+					(github))
+
+;; youtube
+(defwindow youtube :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 306 :y 785 :width 142 :height 145)
+					(youtube))
+
+;; netflix
+(defwindow netflix :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 462 :y 785 :width 142 :height 145)
+					(netflix))
+
+;; tagesschau
+(defwindow tagesschau :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 618 :y 785 :width 142 :height 145)
+					(tagesschau))
+
+;; scinexx
+(defwindow scinexx :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 774 :y 785 :width 142 :height 145)
+					(scinexx))
+
+;; geforcenow
+(defwindow geforcenow :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 930 :y 785 :width 142 :height 145)
+					(geforcenow))
+
+;; weather
+(defwindow weather :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 880 :y 150 :width 550 :height 325)
+					(weather))
+
+;; apps
+(defwindow apps :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 515 :y 490 :width 290 :height 280)
+					(apps))
+
+;; mail
+(defwindow mail :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 820 :y 490 :width 170 :height 280)
+					(mail))
+
+;; logout
+(defwindow logout :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 1445 :y 150 :width 155 :height 155)
+					(logout))
+
+;; sleep
+(defwindow sleep :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 1615 :y 150 :width 155 :height 155)
+					(sleep))
+
+;; reboot
+(defwindow reboot :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 1445 :y 320 :width 155 :height 155)
+					(reboot))
+
+;; poweroff
+(defwindow poweroff :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 1615 :y 320 :width 155 :height 155)
+					(poweroff))
+
+;; folders
+(defwindow folders :stacking "fg" :focusable "false" :monitor 0 :screen 1 
+	    :geometry (geometry :x 1445 :y 490 :width 325 :height 440)
+					(folders))
