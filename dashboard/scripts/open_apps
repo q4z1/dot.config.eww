@@ -28,7 +28,7 @@ elif [[ "$1" == "--wa" ]]; then
 	close_dash && chromium --profile-directory=Default --app-id=hnpfjngllnobngcgfapefoaidbinmjnm &
 
 elif [[ "$1" == "--fm" ]]; then
-	close_dash && nnn ~ &
+	close_dash && kitty -e nnn &
 
 elif [[ "$1" == "--cd" ]]; then
 	close_dash && code &

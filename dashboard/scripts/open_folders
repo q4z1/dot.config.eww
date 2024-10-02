@@ -13,21 +13,21 @@ close_dash() {
 }
 
 if [[ "$1" == "--dl" ]]; then
-	close_dash && nnn ~/Downloads &
+	close_dash && kitty -e nnn ~/Downloads &
 
 elif [[ "$1" == "--docs" ]]; then
-	close_dash && nnn ~/Documents &
+	close_dash && kitty -e nnn ~/Documents &
 
 elif [[ "$1" == "--music" ]]; then
-	close_dash && nnn ~/Music &
+	close_dash && kitty -e nnn ~/Music &
 
 elif [[ "$1" == "--pics" ]]; then
-	close_dash && nnn ~/Pictures &
+	close_dash && kitty -e nnn ~/Pictures &
 
 elif [[ "$1" == "--cfg" ]]; then
-	close_dash && nnn ~/.config &
+	close_dash && kitty -e nnn ~/.config &
 
 elif [[ "$1" == "--local" ]]; then
-	close_dash && nnn ~/.local/share &
+	close_dash && kitty -e nnn ~/.local/share &
 
 fi
