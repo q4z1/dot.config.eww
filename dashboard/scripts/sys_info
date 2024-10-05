@@ -67,7 +67,7 @@ get_battery() {
 }
 
 get_temp() {
-	TEMP=`cat /sys/class/thermal/thermal_zone1/temp`
+	TEMP=`cat /sys/class/thermal/thermal_zone0/temp`
 	K=1000
 	echo $((TEMP / K))°C
 }
