@@ -39,4 +39,7 @@ elif [[ "$1" == "--gp" ]]; then
 elif [[ "$1" == "--is" ]]; then
 	close_dash && inkscape &
 
+elif [[ "$1" == "--st" ]]; then
+	close_dash && steam &
+
 fi

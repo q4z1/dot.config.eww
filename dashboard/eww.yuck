@@ -110,6 +110,11 @@
 	(box :class "netflix" :vexpand "false" :hexpand "false" 
 		(button :style "background: url('images/icons/netflix.svg') no-repeat center; background-size: 75%;" :class "iconweb" :onclick "scripts/open_links --nf")))
 
+;; steam
+(defwidget steam [] 
+	(box :class "steam" :vexpand "false" :hexpand "false" 
+		(button :style "background: url('images/icons/steam.svg') no-repeat center; background-size: 75%;" :class "iconweb" :onclick "scripts/open_links --st")))
+
 ;; tagesschau
 (defwidget tagesschau [] 
 	(box :class "tagesschau" :vexpand "false" :hexpand "false" 
@@ -272,6 +277,11 @@
 (defwindow geforcenow :stacking "fg" :focusable "false" :monitor 1 :screen 1 
 	    :geometry (geometry :x 930 :y 785 :width 142 :height 145)
 					(geforcenow))
+
+;; steam
+(defwindow steam :stacking "fg" :focusable "false" :monitor 1 :screen 1 
+	    :geometry (geometry :x 1086 :y 785 :width 142 :height 145)
+					(steam))
 
 ;; weather
 (defwindow weather :stacking "fg" :focusable "false" :monitor 1 :screen 1 
