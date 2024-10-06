@@ -8,7 +8,7 @@ EWW=`which eww`
 close_dash() {
 	${EWW} --config "$CFG" close \
 					background profile system clock uptime music github \
-					reddit twitter youtube tagesschau scinexx geforcenow netflix weather apps mail logout sleep reboot poweroff folders
+					reddit twitter youtube tagesschau scinexx geforcenow steam netflix weather apps mail logout sleep reboot poweroff folders
 	rm -rf "$FILE"
 }
 
