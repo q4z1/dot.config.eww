@@ -113,7 +113,7 @@
 ;; steam
 (defwidget steam [] 
 	(box :class "steam" :vexpand "false" :hexpand "false" 
-		(button :style "background: url('images/icons/steam.svg') no-repeat center; background-size: 75%;" :class "iconweb" :onclick "scripts/open_links --st")))
+		(button :style "background: url('images/icons/steam.svg') no-repeat center; background-size: 75%;" :class "iconweb" :onclick "scripts/open_apps --st")))
 
 ;; tagesschau
 (defwidget tagesschau [] 
